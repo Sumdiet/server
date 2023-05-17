@@ -11,6 +11,7 @@ namespace NutriNow.ViewModel
         public ICollection<Meal>? Meals { get; set; }
         public Macro? MacroGoal { get; set; }
         public MacroDto? CurrentMacro { get; set; }
+        public Food[] Food { get; set; }
         public string Token { get; set; }
 
         public ResponseUserVM(int userId, string userName, UserInformation? userInformation, ICollection<Meal>? meals, Macro? macro, MacroDto? currentMacro, string token)

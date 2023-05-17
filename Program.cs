@@ -46,6 +46,7 @@ builder.Services.Configure<AppSettings>(appSettingsSection);
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGeneralRepository, GeneralRepository>();
 builder.Services.AddScoped<IRegisterFoodRepository, RegisterFoodRepository>();
+builder.Services.AddScoped<IFoodRepository, FoodRepository>();
 builder.Services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings
                .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddDbContext<Context>(options => { options.UseNpgsql(builder.Configuration.GetConnectionString("ConnectionDatabase")); });

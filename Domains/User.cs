@@ -36,8 +36,14 @@ namespace NutriNow.Domains
         [ObsoleteAttribute("Esse método é usado para testes e como construtor padrão do entityFramework", false)]
         public User()
         {
-        }
 
+        }
+        public User(string password, string email, string username)
+        {
+            this.UserName = username;
+            this.Email = email;
+            this.Password = this.HashPassword(password);
+        }
         private byte[] CreateSalt()
         {
             var buffer = Encoding.ASCII.GetBytes(this.UserName);

@@ -80,10 +80,11 @@ namespace NutriNow.Controller
         }
 
         [HttpPost("create")]
-        [Authorize]
         public async Task<IActionResult> CreateUserAsync(CreateUserVM user)
         {
-            User newUser = new User(3, user.UserName, user.Email, user.Password, null, null, null);
+            //User newUser = new User(3, user.UserName, user.Email, user.Password, null, null, null);
+            User newUser = new User(user.Password, user.Email, user.UserName);
+            
             _generalRepository.Add(newUser);
             if (await _generalRepository.SaveChangesAsync())
             {
