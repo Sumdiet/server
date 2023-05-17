@@ -73,7 +73,7 @@ namespace NutriNow.Controller
                 }
                 userFinded.CountingMacro();
                 string token = userFinded.CreateTokenJwt(_appSettings.Secret, _appSettings.ValidoEm, _appSettings.Emissor, _appSettings.ExpiracaoHoras);
-                ResponseUserVM responseUserVM = new ResponseUserVM(userFinded.UserId, userFinded.UserName, userFinded.UserInformation, userFinded.Meals, userFinded.MacroGoal, userFinded.CurrentMacro, token);
+                ResponseUserVM responseUserVM = new ResponseUserVM(userFinded.UserId, userFinded.UserName, userFinded.UserInformation, userFinded.Meals, userFinded.MacroGoal, userFinded.CurrentMacro, token, userFinded.Water);
                 return Ok(responseUserVM);
             }
             return Unauthorized();
@@ -112,7 +112,7 @@ namespace NutriNow.Controller
             }
             userFinded.CountingMacro();
             string token = userFinded.CreateTokenJwt(_appSettings.Secret, _appSettings.ValidoEm, _appSettings.Emissor, _appSettings.ExpiracaoHoras);
-            ResponseUserVM responseUserVM = new ResponseUserVM(userFinded.UserId, userFinded.UserName, userFinded.UserInformation, userFinded.Meals, userFinded.MacroGoal, userFinded.CurrentMacro, token);
+            ResponseUserVM responseUserVM = new ResponseUserVM(userFinded.UserId, userFinded.UserName, userFinded.UserInformation, userFinded.Meals, userFinded.MacroGoal, userFinded.CurrentMacro, token, userFinded.Water);
             return Ok(responseUserVM);
         }
 

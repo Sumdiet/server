@@ -21,7 +21,8 @@ namespace NutriNow.Domains
         public Macro? MacroGoal { get; set; }
         [NotMapped]
         public MacroDto? CurrentMacro { get; set; } = new MacroDto();
-
+        [NotMapped]
+        public Double Water { get; set; } = 0;
         public User(int userId, string userName, string email, string password, UserInformation? userInformation, Macro? macroGoal, ICollection<Meal>? meal)
         {
             this.UserId = userId;
@@ -99,6 +100,11 @@ namespace NutriNow.Domains
                 {
                     foreach(var foodRegistred in meal.RegisteredFood!)
                     {
+                        if (foodRegistred.Food.FoodName == "Água")
+                        {
+                            this.Water += foodRegistred.Quantity;
+                            continue;
+                        }
                         foreach (var key in typeof(MacroDto).GetProperties())
                         {
                             var result = key.GetValue(foodRegistred.CurrentMacro);
