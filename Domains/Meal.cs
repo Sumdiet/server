@@ -11,6 +11,8 @@ namespace NutriNow.Domains
         public string MealTime { get; set; }
         public ICollection<RegisteredFood>? RegisteredFood { get; set; }
         public Macro MacroGoal { get; set; }
+        public int MacroGoalMacroId { get; set; }
+        public int UserId { get; set; }
 
         public Meal(int id, string mealName, string mealTime, Macro macroGoal, ICollection<RegisteredFood>? registeredFoods)
         {
@@ -24,6 +26,13 @@ namespace NutriNow.Domains
         public Meal()
         {
 
+        }
+        public Meal(string mealName,string mealtTime, int macroGoalId, int userId)
+        {
+            this.MealName=mealName;
+            this.MealTime=mealtTime;
+            this.MacroGoalMacroId = macroGoalId;
+            this.UserId = userId;
         }
     }
 }

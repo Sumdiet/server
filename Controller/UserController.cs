@@ -14,51 +14,22 @@ namespace NutriNow.Controller
     [Route("api/v1/user")]
     public class UserController : ControllerBase
     {
-        //User User1 = new User(1, "Dante Schiavi", "dantemds@email.com", "123", null, null, null);
-
-
-        //List<User> Users = new List<User>();
-        //List<Meal> Meal = new List<Meal>();
-        //List<RegisteredFood> RegisteredFood = new List<RegisteredFood>();
-        //List<Food> Food = new List<Food>();
-        //public UserController()
-        //{
-        //    UserInformation UserInfo2 = new UserInformation(1, "+30", "Homem", "4-6 vezes na semana", "Ganhar peso", "175", "-90");
-        //    Macro Macro2 = new Macro(1, "300", "250", "15", "2000", 1, 2, "2800");
-        //    Macro macroGoalMeal = new Macro(2, "100", "100", "3", null, 2, 1, "600");
-        //    Macro macroFood = new Macro(3, "1", "12", "1", null, 3, 1, "30");
-        //    Food food1 = new Food(1, "Pão integral", macroFood);
-        //    Food.Add(food1);
-        //    RegisteredFood registeredFood = new RegisteredFood(1, 1, 2, Food, 100);
-        //    RegisteredFood.Add(registeredFood);
-        //    Meal meal1 = new Meal(1, "Café da Manhã", "08:00", macroGoalMeal, RegisteredFood);
-        //    Meal.Add(meal1);
-        //    User User2 = new User(2, "Ruan Lucas", "ruan@email.com", "1234", UserInfo2, Macro2, Meal);
-
-        //    Users.Add(User1);
-        //    Users.Add(User2);
-        //}
+       
         private readonly AppSettings _appSettings;
         private readonly IUserRepository _userRepository;
         private readonly IGeneralRepository _generalRepository;
-        public UserController(IUserRepository userRepository, IGeneralRepository generalRepository, IOptions<AppSettings> appSettings)
+        private readonly IMealRepository _mealRepository;
+        public UserController(IUserRepository userRepository, IGeneralRepository generalRepository, IOptions<AppSettings> appSettings, IMealRepository mealRepository)
         {
             this._generalRepository = generalRepository;
+            this._mealRepository = mealRepository;
             this._appSettings = appSettings.Value;
             this._userRepository = userRepository;
         }
 
-        //[HttpGet("getall")]
-        //public async Task<IActionResult> GetAllUsersAsync()
-        //{
-        //    if (Users.Count == 0) return NoContent();
-        //    return Ok(Users);
-        //}
-
         [HttpPost("auth")]
         public async Task<IActionResult> AuthUserAsync(AuthUserVM authUser)
         {
-            //User userFinded = Users.Find(u => u.Email == authUser.Email);
             User userFinded = await _userRepository.GetUserAsyncByEmail(authUser.Email,authUser.Date);
             if (userFinded == null) return NotFound();
             bool verified = userFinded.VerifyHash(authUser.Password);
@@ -82,10 +53,22 @@ namespace NutriNow.Controller
         [HttpPost("create")]
         public async Task<IActionResult> CreateUserAsync(CreateUserVM user)
         {
-            //User newUser = new User(3, user.UserName, user.Email, user.Password, null, null, null);
             User newUser = new User(user.Password, user.Email, user.UserName);
             
             _generalRepository.Add(newUser);
+            if (await _generalRepository.SaveChangesAsync())
+            {
+                var userFinded = await _userRepository.GetUserAsyncByEmail(user.Email, DateTime.Now);
+                Meal meal1 = new Meal("Café da manhã", "08:00", 2, userFinded.UserId);
+                Meal meal2 = new Meal("Alomço", "12:00", 2, userFinded.UserId);
+                Meal meal3 = new Meal("Café da tarde", "16:00", 2, userFinded.UserId);
+                Meal meal4 = new Meal("Jantar", "20:00", 2, userFinded.UserId);
+
+                _generalRepository.Add(meal1);
+                _generalRepository.Add(meal2);
+                _generalRepository.Add(meal3);
+                _generalRepository.Add(meal4);
+            }
             if (await _generalRepository.SaveChangesAsync())
             {
                 user.Password = "";

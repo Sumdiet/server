@@ -18,6 +18,7 @@ namespace NutriNow.Domains
         public byte[] Password { get; set; }
         public UserInformation? UserInformation { get; set; }
         public ICollection<Meal>? Meals { get; set; }
+        public int MacroGoalMacroId { get; set; }
         public Macro? MacroGoal { get; set; }
         [NotMapped]
         public MacroDto? CurrentMacro { get; set; } = new MacroDto();
@@ -43,6 +44,7 @@ namespace NutriNow.Domains
         {
             this.UserName = username;
             this.Email = email;
+            this.MacroGoalMacroId = 1;
             this.Password = this.HashPassword(password);
         }
         private byte[] CreateSalt()
