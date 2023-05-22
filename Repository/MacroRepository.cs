@@ -13,14 +13,14 @@ namespace NutriNow.Repository
             _context = context;
 
         }
-        public async Task<Macro> GetMacroById(int macroId)
+        public async Task<Macro> GetMacroById(Guid macroId)
         {
             var result = _context.Macro;
 
-            result.AsNoTracking()
-                .OrderBy(macro => macro.MacroId)
-                .Where(macro => macro.MacroId == macroId);
-            return await result!.FirstOrDefaultAsync();
+            result.AsNoTracking();
+          
+            var query = await result!.ToArrayAsync();
+            return query.Where(q => q.MacroId == macroId).FirstOrDefault();
         }
     }
 }

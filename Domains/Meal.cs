@@ -6,12 +6,12 @@ namespace NutriNow.Domains
     public class Meal
     {
         [Key()]
-        public int MealId { get; set; }
+        public int MealId { get; set; } 
         public string MealName { get; set; }
         public string MealTime { get; set; }
         public ICollection<RegisteredFood>? RegisteredFood { get; set; }
         public Macro MacroGoal { get; set; }
-        public int MacroGoalMacroId { get; set; }
+        public Guid MacroGoalMacroId { get; set; }
         public int UserId { get; set; }
 
         public Meal(int id, string mealName, string mealTime, Macro macroGoal, ICollection<RegisteredFood>? registeredFoods)
@@ -27,7 +27,7 @@ namespace NutriNow.Domains
         {
 
         }
-        public Meal(string mealName,string mealtTime, int macroGoalId, int userId)
+        public Meal(string mealName,string mealtTime, Guid macroGoalId, int userId)
         {
             this.MealName=mealName;
             this.MealTime=mealtTime;

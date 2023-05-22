@@ -16,21 +16,19 @@ namespace NutriNow.Domains
         public string UserName { get; set; }
         public string Email { get; set; }
         public byte[] Password { get; set; }
-        public UserInformation? UserInformation { get; set; }
         public ICollection<Meal>? Meals { get; set; }
-        public int MacroGoalMacroId { get; set; }
+        public Guid MacroGoalMacroId { get; set; }
         public Macro? MacroGoal { get; set; }
         [NotMapped]
         public MacroDto? CurrentMacro { get; set; } = new MacroDto();
         [NotMapped]
         public Double Water { get; set; } = 0;
-        public User(int userId, string userName, string email, string password, UserInformation? userInformation, Macro? macroGoal, ICollection<Meal>? meal)
+        public User(int userId, string userName, string email, string password, Macro? macroGoal, ICollection<Meal>? meal)
         {
             this.UserId = userId;
             this.UserName = userName;   
             this.Email = email;
             this.Password = this.HashPassword(password);
-            this.UserInformation = userInformation;
             this.MacroGoal = macroGoal;
             this.Meals = meal;
             CountingMacro();
@@ -40,11 +38,11 @@ namespace NutriNow.Domains
         {
 
         }
-        public User(string password, string email, string username)
+        public User(string password, string email, string username, Guid macroGoal)
         {
             this.UserName = username;
             this.Email = email;
-            this.MacroGoalMacroId = 1;
+            this.MacroGoalMacroId = macroGoal;
             this.Password = this.HashPassword(password);
         }
         private byte[] CreateSalt()

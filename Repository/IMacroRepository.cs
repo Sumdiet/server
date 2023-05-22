@@ -4,6 +4,6 @@ namespace NutriNow.Repository
 {
     public interface IMacroRepository
     {
-        public Task<Macro> GetMacroById(int macroId);
+        public Task<Macro> GetMacroById(Guid macroId);
     }
 }

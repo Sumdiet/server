@@ -15,7 +15,7 @@ namespace NutriNow.Repository
         }
         public async Task<User> GetUserAsyncByEmail(string email, DateTime date)
         {
-            IQueryable<User> query = _context.User.Include(u => u.MacroGoal).Include(u=> u.UserInformation).Include(u=>u.Meals).ThenInclude(m=> m.MacroGoal).Include(u=> u.Meals).ThenInclude(m=>m.RegisteredFood).ThenInclude(r=>r.Food)
+            IQueryable<User> query = _context.User.Include(u => u.MacroGoal).Include(u=>u.Meals).ThenInclude(m=> m.MacroGoal).Include(u=> u.Meals).ThenInclude(m=>m.RegisteredFood).ThenInclude(r=>r.Food)
                 .ThenInclude(f=>f.Macro);
 
             query = query.AsNoTracking()
@@ -30,7 +30,7 @@ namespace NutriNow.Repository
         }
         public async Task<User> GetUserAsyncById(int id, DateTime date)
         {
-            IQueryable<User> query = _context.User.Include(u => u.MacroGoal).Include(u => u.UserInformation).Include(u => u.Meals).ThenInclude(m => m.MacroGoal).Include(u => u.Meals).ThenInclude(m => m.RegisteredFood).ThenInclude(r => r.Food)
+            IQueryable<User> query = _context.User.Include(u => u.MacroGoal).Include(u => u.Meals).ThenInclude(m => m.MacroGoal).Include(u => u.Meals).ThenInclude(m => m.RegisteredFood).ThenInclude(r => r.Food)
                 .ThenInclude(f => f.Macro);
             query = query.AsNoTracking()
                 .OrderBy(user => user.UserId)

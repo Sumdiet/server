@@ -6,7 +6,7 @@ namespace NutriNow.Domains
     public class Macro
     {
         [Key()]
-        public int MacroId { get; set; }
+        public Guid MacroId { get; set; } = Guid.NewGuid();
         public string Protein { get; set; }
         public string Carbs { get; set; }
         public string Fat { get; set; }
@@ -16,9 +16,8 @@ namespace NutriNow.Domains
         public int EntityId { get; set; }
 
         #region
-        public Macro(int id, string prot, string carb, string fat, string water, int type, int entityId, string kcal)
+        public Macro( string prot, string carb, string fat, string water, int type, int entityId, string kcal)
         {
-            this.MacroId = id;
             this.Protein = prot;
             this.Carbs = carb;
             this.Fat = fat;
@@ -31,10 +30,6 @@ namespace NutriNow.Domains
         public Macro() { }
         #endregion
         #region
-        public void setMacroId(int macroId)
-        {
-            this.MacroId = macroId;
-        }
         public void setType(int type)
         {
             this.Type = type;

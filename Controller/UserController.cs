@@ -44,7 +44,7 @@ namespace NutriNow.Controller
                 }
                 userFinded.CountingMacro();
                 string token = userFinded.CreateTokenJwt(_appSettings.Secret, _appSettings.ValidoEm, _appSettings.Emissor, _appSettings.ExpiracaoHoras);
-                ResponseUserVM responseUserVM = new ResponseUserVM(userFinded.UserId, userFinded.UserName, userFinded.UserInformation, userFinded.Meals, userFinded.MacroGoal, userFinded.CurrentMacro, token, userFinded.Water);
+                ResponseUserVM responseUserVM = new ResponseUserVM(userFinded.UserId, userFinded.UserName, userFinded.Meals, userFinded.MacroGoal, userFinded.CurrentMacro, token, userFinded.Water);
                 return Ok(responseUserVM);
             }
             return Unauthorized();
@@ -53,16 +53,31 @@ namespace NutriNow.Controller
         [HttpPost("create")]
         public async Task<IActionResult> CreateUserAsync(CreateUserVM user)
         {
-            User newUser = new User(user.Password, user.Email, user.UserName);
+            Macro defaultMacro = new Macro()
+            {
+                Protein = "60",
+                Carbs = "300",
+                Fat = "50",
+                Kcal = "2000",
+                Type = 1,
+                Water = "2000"
+            };
+
+            _generalRepository.Add(defaultMacro);
+
+
+
+
+            User newUser = new User(user.Password, user.Email, user.UserName, defaultMacro.MacroId);
             
             _generalRepository.Add(newUser);
             if (await _generalRepository.SaveChangesAsync())
             {
                 var userFinded = await _userRepository.GetUserAsyncByEmail(user.Email, DateTime.Now);
-                Meal meal1 = new Meal("Café da manhã", "08:00", 2, userFinded.UserId);
-                Meal meal2 = new Meal("Alomço", "12:00", 2, userFinded.UserId);
-                Meal meal3 = new Meal("Café da tarde", "16:00", 2, userFinded.UserId);
-                Meal meal4 = new Meal("Jantar", "20:00", 2, userFinded.UserId);
+                Meal meal1 = new Meal("Café da manhã", "08:00", Guid.Parse("c1e888b1-b1a3-475f-bc7b-4e6f419610cc"), userFinded.UserId);
+                Meal meal2 = new Meal("Almoço", "12:00", Guid.Parse("c1e888b1-b1a3-475f-bc7b-4e6f419610cc"), userFinded.UserId);
+                Meal meal3 = new Meal("Café da tarde", "16:00", Guid.Parse("c1e888b1-b1a3-475f-bc7b-4e6f419610cc"), userFinded.UserId);
+                Meal meal4 = new Meal("Jantar", "20:00", Guid.Parse("c1e888b1-b1a3-475f-bc7b-4e6f419610cc"), userFinded.UserId);
 
                 _generalRepository.Add(meal1);
                 _generalRepository.Add(meal2);
@@ -95,7 +110,7 @@ namespace NutriNow.Controller
             }
             userFinded.CountingMacro();
             string token = userFinded.CreateTokenJwt(_appSettings.Secret, _appSettings.ValidoEm, _appSettings.Emissor, _appSettings.ExpiracaoHoras);
-            ResponseUserVM responseUserVM = new ResponseUserVM(userFinded.UserId, userFinded.UserName, userFinded.UserInformation, userFinded.Meals, userFinded.MacroGoal, userFinded.CurrentMacro, token, userFinded.Water);
+            ResponseUserVM responseUserVM = new ResponseUserVM(userFinded.UserId, userFinded.UserName, userFinded.Meals, userFinded.MacroGoal, userFinded.CurrentMacro, token, userFinded.Water);
             return Ok(responseUserVM);
         }
 
